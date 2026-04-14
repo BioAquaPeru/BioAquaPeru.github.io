@@ -1,0 +1,154 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Glaucus - Generador de informes tecnicos en PDF." />
+  <title>Glaucus | Generador de Informe</title>
+  <link rel="icon" type="image/x-icon" href="assets/logo-glaucus.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="informe.css" />
+</head>
+<body>
+  <div class="bg-layers" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="index.html" class="brand">
+        <img src="assets/logo-glaucu-black.png" alt="Glaucus" />
+        <div>
+          <strong>GLAUCUS</strong>
+          <span>Tecnologia e innovacion en tratamiento de aguas</span>
+        </div>
+      </a>
+      <a class="btn btn-outline" href="index.html">Volver al sitio</a>
+    </div>
+  </header>
+
+  <main class="container page-wrap">
+    <section id="loginGate" class="panel login-panel">
+      <h2>Acceso a Informes</h2>
+      <p>Ingresa con credenciales para generar reportes tecnicos.</p>
+      <form id="loginForm" class="login-form" novalidate>
+        <label class="field">
+          Usuario
+          <input type="text" id="loginUser" required />
+        </label>
+        <label class="field">
+          Contrasena
+          <input type="password" id="loginPass" required />
+        </label>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+        <p id="loginStatus" class="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="reportApp" class="hidden-app">
+    <section class="panel intro">
+      <h1>Generador de Informe Tecnico</h1>
+      <p>
+        Completa los datos, sube evidencias fotograficas y genera un PDF profesional listo para enviar.
+      </p>
+      <div class="meta">
+        <span>Codigo sugerido:</span>
+        <strong id="previewCode">GL-0000-00-000</strong>
+      </div>
+    </section>
+
+    <form id="reportForm" class="panel form-panel" novalidate>
+      <h2>Datos principales</h2>
+      <p class="field-hint">Selecciona un cliente registrado para autocompletar RUC y direccion. Puedes editar la lista en el codigo.</p>
+      <div class="main-grid">
+        <label class="field">
+          Cliente *
+          <select id="clienteSelect" name="cliente" required>
+            <option value="">Seleccionar cliente...</option>
+          </select>
+        </label>
+
+        <label class="field">
+          Cliente manual (opcional)
+          <input type="text" id="clienteManual" placeholder="Solo si no esta en la lista" />
+        </label>
+
+        <label class="field">
+          RUC *
+          <input type="text" id="rucInput" name="ruc" required />
+        </label>
+
+        <label class="field">
+          Direccion *
+          <input type="text" id="direccionInput" name="direccion" required />
+        </label>
+
+        <label class="field">
+          Tecnico *
+          <input type="text" name="tecnico" required />
+        </label>
+      </div>
+
+      <h2>1. Foto de cargo (obligatoria)</h2>
+      <section class="uploader" data-key="cargo" data-max="1" data-required="true">
+        <div class="uploader-head">
+          <p>Sube 1 imagen. Esta imagen ocupara todo el ancho en el PDF.</p>
+          <input class="file-input" type="file" accept="image/*" />
+        </div>
+        <div class="preview-grid" id="preview-cargo"></div>
+      </section>
+
+      <h2>2. Fotos de pH (maximo 2)</h2>
+      <section class="uploader" data-key="ph" data-max="2">
+        <div class="uploader-head">
+          <p>Registra hasta 2 imagenes con su descripcion.</p>
+          <input class="file-input" type="file" accept="image/*" multiple />
+        </div>
+        <div class="preview-grid" id="preview-ph"></div>
+      </section>
+
+      <h2>3. Trampas de grasa (opcional, maximo 4)</h2>
+      <section class="uploader" data-key="grasa" data-max="4">
+        <div class="uploader-head">
+          <p>Sube de 1 a 4 imagenes. El layout en PDF se adapta automaticamente.</p>
+          <input class="file-input" type="file" accept="image/*" multiple />
+        </div>
+        <div class="preview-grid" id="preview-grasa"></div>
+      </section>
+
+      <h2>4. Observaciones (opcional, maximo 4)</h2>
+      <section class="uploader" data-key="obs" data-max="4">
+        <div class="uploader-head">
+          <p>Sube de 1 a 4 imagenes con texto descriptivo.</p>
+          <input class="file-input" type="file" accept="image/*" multiple />
+        </div>
+        <div class="preview-grid" id="preview-obs"></div>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="previewPdfBtn" class="btn btn-outline">Vista previa PDF</button>
+        <button type="submit" class="btn btn-primary">Generar Informe</button>
+        <p id="status" class="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <section id="pdfPreviewPanel" class="panel preview-panel hidden-app">
+      <div class="preview-head">
+        <h2>Vista previa del informe</h2>
+        <button type="button" id="downloadFromPreviewBtn" class="btn btn-primary">Descargar PDF</button>
+      </div>
+      <div id="pdfPreviewGrid" class="pdf-preview-grid"></div>
+    </section>
+    </section>
+  </main>
+
+  <div id="pdfRenderRoot" class="pdf-render-root" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="informe.js"></script>
+</body>
+</html>
