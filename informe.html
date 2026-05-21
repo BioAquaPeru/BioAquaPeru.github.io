@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Glaucus - Generador profesional de reportes tecnicos en PDF." />
+  <title>Glaucus | Reporte Tecnico</title>
+  <link rel="icon" type="image/png" href="assets/logo-glaucus.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="informe.css" />
+</head>
+<body>
+  <div class="bg-layers" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a href="index.html" class="brand-link">
+        <img src="assets/logo-glaucus.png" alt="Glaucus" />
+        <span>
+          <strong>Glaucus</strong>
+          <small>Tecnologia e innovacion en tratamiento de aguas</small>
+        </span>
+      </a>
+      <a class="btn btn-ghost" href="index.html">Volver al sitio</a>
+    </div>
+  </header>
+
+  <main class="container app-shell">
+    <section id="loginGate" class="access-panel">
+      <div>
+        <p class="eyebrow">Area privada</p>
+        <h1>Generador de reportes tecnicos</h1>
+        <p>Ingresa para crear reportes con evidencias fotograficas, membrete profesional y exportacion PDF.</p>
+      </div>
+
+      <form id="loginForm" class="login-form" novalidate>
+        <label class="field">
+          Usuario
+          <input type="text" id="loginUser" autocomplete="username" required />
+        </label>
+        <label class="field">
+          Contrasena
+          <input type="password" id="loginPass" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+        <p id="loginStatus" class="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section id="reportApp" class="report-app" hidden>
+      <section class="hero-panel">
+        <div>
+          <p class="eyebrow">Codigo proximo</p>
+          <h1 id="previewCode">GL-000000001</h1>
+          <p>El contador se guarda en este navegador y se reinicia automaticamente al cambiar de mes.</p>
+        </div>
+        <div class="logo-guide">
+          <strong>Marca fija del PDF</strong>
+          <span>El logo y textos salen desde <b>REPORT_BRAND</b> en informe.js. Logo actual: assets/logo-glaucus.png.</span>
+        </div>
+      </section>
+
+      <form id="reportForm" class="report-form" novalidate>
+        <section class="form-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Datos principales</p>
+              <h2>Cliente y responsable</h2>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              Cliente
+              <select id="clienteSelect" required>
+                <option value="">Seleccionar cliente...</option>
+              </select>
+            </label>
+            <label class="field">
+              RUC
+              <input type="text" id="rucInput" readonly required />
+            </label>
+            <label class="field wide">
+              Direccion
+              <input type="text" id="direccionInput" readonly required />
+            </label>
+            <label class="field">
+              Responsable
+              <input type="text" id="responsableInput" placeholder="Eduar Garcia" required />
+            </label>
+            <label class="field">
+              Fecha del reporte
+              <input type="date" id="fechaInput" required />
+            </label>
+          </div>
+        </section>
+
+        <section class="form-section evidence-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Evidencias</p>
+              <h2>Secciones fotograficas</h2>
+            </div>
+            <button type="button" id="addSectionBtn" class="btn btn-secondary">Agregar seccion</button>
+          </div>
+
+          <div id="sectionsList" class="sections-list"></div>
+        </section>
+
+        <section class="form-section summary-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Resumen</p>
+              <h2>Resumen tecnico de actividades realizadas</h2>
+            </div>
+            <button type="button" id="generatePromptBtn" class="btn btn-secondary">Generar prompt</button>
+          </div>
+
+          <div class="summary-grid">
+            <label class="field">
+              Prompt para IA
+              <textarea id="aiPromptInput" rows="8" readonly placeholder="Genera el prompt cuando termines de escribir las descripciones de las fotos."></textarea>
+            </label>
+
+            <label class="field">
+              Resumen final para el PDF
+              <textarea id="summaryInput" rows="8" required placeholder="Pega aqui el resumen generado por la IA o escribe tu resumen tecnico."></textarea>
+            </label>
+          </div>
+
+          <div class="summary-actions">
+            <button type="button" id="copyPromptBtn" class="btn btn-ghost">Copiar prompt</button>
+            <button type="button" id="pasteSummaryBtn" class="btn btn-ghost">Pegar resumen</button>
+          </div>
+        </section>
+
+
+        <section class="form-section video-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Video de evidencia</p>
+              <h2>Enlaces de videos complementarios</h2>
+            </div>
+            <button type="button" id="addVideoBtn" class="btn btn-secondary">Agregar video</button>
+          </div>
+
+          <div class="form-grid">
+            <label class="field">
+              Titulo del video
+              <input type="text" id="videoTitleInput" placeholder="Video de inspeccion tecnica" />
+            </label>
+            <label class="field">
+              Link del video
+              <input type="text" id="videoUrlInput" placeholder="https://drive.google.com/..." />
+            </label>
+          </div>
+          <div id="videosList" class="video-list"></div>
+        </section>
+
+        <section class="form-section recommendations-section">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Criterios tecnicos</p>
+              <h2>Recomendaciones y acciones sugeridas</h2>
+            </div>
+            <button type="button" id="generateRecommendationsPromptBtn" class="btn btn-secondary">Generar prompt</button>
+          </div>
+
+          <div class="recommendations-checklist" id="recommendationsChecklist"></div>
+
+          <div class="summary-grid">
+            <label class="field">
+              Prompt para recomendaciones
+              <textarea id="recommendationsPromptInput" rows="7" readonly placeholder="Selecciona las secciones que quieres analizar y genera el prompt."></textarea>
+            </label>
+
+            <label class="field">
+              Recomendaciones finales para el PDF
+              <textarea id="recommendationsInput" rows="7" placeholder="Pega aqui las recomendaciones generadas por la IA o escribe tus acciones sugeridas."></textarea>
+            </label>
+          </div>
+
+          <div class="summary-actions">
+            <button type="button" id="copyRecommendationsPromptBtn" class="btn btn-ghost">Copiar prompt</button>
+            <button type="button" id="pasteRecommendationsBtn" class="btn btn-ghost">Pegar recomendaciones</button>
+          </div>
+        </section>
+
+        <div class="actions-bar">
+          <button type="button" id="previewPdfBtn" class="btn btn-ghost">Vista previa</button>
+          <button type="submit" class="btn btn-primary">Generar y descargar PDF</button>
+          <p id="status" class="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section id="pdfPreviewPanel" class="preview-panel" hidden>
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">PDF</p>
+            <h2>Vista previa</h2>
+          </div>
+          <button type="button" id="downloadFromPreviewBtn" class="btn btn-primary">Descargar esta vista</button>
+        </div>
+        <div id="pdfPreviewGrid" class="pdf-preview-grid"></div>
+      </section>
+    </section>
+  </main>
+
+  <div id="pdfRenderRoot" class="pdf-render-root" aria-hidden="true"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="informe.js"></script>
+</body>
+</html>
